@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FloodSense AI | Intelligent Flood Risk Prediction</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <main class="app-container">
+        <header class="app-header">
+            <div class="header-main">
+                <div class="logo-area">
+                    <span class="logo-icon">🌊</span>
+                    <h1>FloodSense <span>AI</span></h1>
+                </div>
+                <div class="user-profile">
+                    <span class="user-avatar">👤</span>
+                    <span class="user-name">Welcome, <strong>{{ session['user_name'] }}</strong> ({{ session['user_role'] }})</span>
+                    <a href="/logout" class="logout-btn">Log Out</a>
+                </div>
+            </div>
+            <p class="subtitle">High-fidelity meteorological flood risk assessment model</p>
+        </header>
+
+        <section class="main-content">
+            <div class="form-wrapper card">
+                <form id="predictionForm" class="grid-form">
+                    <div class="form-section-title">Atmospheric Indicators</div>
+                    
+                    <div class="input-group">
+                        <label for="temp">Avg Temperature (°C)</label>
+                        <input type="number" id="temp" step="0.1" placeholder="e.g. 28.5" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="humidity">Relative Humidity (%)</label>
+                        <input type="number" id="humidity" min="0" max="100" placeholder="e.g. 75" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="cloud_cover">Cloud Cover (%)</label>
+                        <input type="number" id="cloud_cover" min="0" max="100" placeholder="e.g. 40" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="sub_index">Sub-Division Basin Index</label>
+                        <input type="number" id="sub_index" step="0.1" placeholder="e.g. 350.5" required>
+                    </div>
+
+                    <div class="form-section-title">Precipitation Levels</div>
+
+                    <div class="input-group full-width">
+                        <label for="annual_rainfall">Annual Rainfall (mm)</label>
+                        <input type="number" id="annual_rainfall" step="0.1" placeholder="e.g. 3200.0" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="jan_feb">Winter Rainfall (Jan-Feb) (mm)</label>
+                        <input type="number" id="jan_feb" step="0.1" placeholder="e.g. 25.4" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="mar_may">Summer Rainfall (Mar-May) (mm)</label>
+                        <input type="number" id="mar_may" step="0.1" placeholder="e.g. 300.2" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="jun_sep">Monsoon Rainfall (Jun-Sep) (mm)</label>
+                        <input type="number" id="jun_sep" step="0.1" placeholder="e.g. 2200.0" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="oct_dec">Autumn Rainfall (Oct-Dec) (mm)</label>
+                        <input type="number" id="oct_dec" step="0.1" placeholder="e.g. 600.5" required>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label for="avg_june">Average June Rainfall (mm)</label>
+                        <input type="number" id="avg_june" step="0.1" placeholder="e.g. 250.0" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span>Analyze Flood Risk</span>
+                        <span class="btn-glow"></span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="results-wrapper">
+                <div class="card default-state" id="defaultState">
+                    <div class="info-icon">📊</div>
+                    <h3>Analysis Dashboard</h3>
+                    <p>Enter local meteorological readings and submit to run prediction on the classification model.</p>
+                </div>
+
+                <div class="card result-card" id="resultCard">
+                    <div class="result-header">
+                        <div class="status-badge" id="riskBadge">PENDING</div>
+                        <h3 id="riskTitle">Analyzing weather metrics...</h3>
+                    </div>
+
+                    <div class="gauge-container">
+                        <div class="gauge-bar">
+                            <div class="gauge-fill" id="probabilityFill"></div>
+                        </div>
+                        <div class="gauge-metrics">
+                            <span id="probabilityText">0% probability</span>
+                            <span>Scale 0-100%</span>
+                        </div>
+                    </div>
+
+                    <div class="probability-details">
+                        <div class="prob-stat">
+                            <span class="stat-label">Flood Risk Probability</span>
+                            <span class="stat-val risk-color" id="floodProbVal">0%</span>
+                        </div>
+                        <div class="prob-stat">
+                            <span class="stat-label">Safety Chance</span>
+                            <span class="stat-val safe-color" id="safeProbVal">100%</span>
+                        </div>
+                    </div>
+
+                    <div class="recommendations">
+                        <h4>Precautionary Directives</h4>
+                        <ul id="recommendationList">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prediction History Audit Trail -->
+        <section class="history-section card">
+            <div class="section-header">
+                <h3>📜 Prediction Audit Trail</h3>
+                <p class="section-desc">Historical log of weather entries mapped under your profile</p>
+            </div>
+            <div class="table-container">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Date / Time</th>
+                            <th>Temp (°C)</th>
+                            <th>Humidity (%)</th>
+                            <th>Cloud Cover (%)</th>
+                            <th>Annual Rain (mm)</th>
+                            <th>Monsoon Rain (mm)</th>
+                            <th>Risk Score</th>
+                            <th>Classification</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- Populated dynamically via script.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer-bar">
+        <p>&copy; 2026 FloodSense AI. Running local classification models.</p>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

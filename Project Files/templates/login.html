@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | FloodSense AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="auth-page">
+    <div class="glow-bg"></div>
+    <main class="auth-container">
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">🌊</span>
+                <h1>FloodSense <span>AI</span></h1>
+            </div>
+            <p class="subtitle">Log in to run flood risk assessments and track history</p>
+        </header>
+
+        <div class="card auth-card">
+            <h2>Welcome Back</h2>
+            <p class="auth-intro">Please authenticate with your credentials</p>
+
+            {% if error %}
+            <div class="error-banner">{{ error }}</div>
+            {% endif %}
+
+            <form action="/login" method="POST" class="auth-form">
+                <div class="input-group full-width">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="e.g. john@gmail.com" required>
+                </div>
+
+                <div class="input-group full-width">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span>Access Dashboard</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>New to FloodSense AI? <a href="/register">Create an Account</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="app-footer-bar">
+        <p>&copy; 2026 FloodSense AI. All rights reserved.</p>
+    </footer>
+</body>
+</html>

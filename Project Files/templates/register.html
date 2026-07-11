@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | FloodSense AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="auth-page">
+    <div class="glow-bg"></div>
+    <main class="auth-container">
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">🌊</span>
+                <h1>FloodSense <span>AI</span></h1>
+            </div>
+            <p class="subtitle">Create an account to begin predictive analysis</p>
+        </header>
+
+        <div class="card auth-card">
+            <h2>Get Started</h2>
+            <p class="auth-intro">Fill out the credentials below to create your account</p>
+
+            {% if error %}
+            <div class="error-banner">{{ error }}</div>
+            {% endif %}
+
+            <form action="/register" method="POST" class="auth-form">
+                <div class="input-group full-width">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="e.g. John Doe" required>
+                </div>
+
+                <div class="input-group full-width">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="e.g. john@gmail.com" required>
+                </div>
+
+                <div class="input-group full-width">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Min. 6 characters" minlength="6" required>
+                </div>
+
+                <div class="input-group full-width">
+                    <label for="role">Account Role</label>
+                    <select id="role" name="role" class="auth-select">
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span>Create Account</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="/login">Log In</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="app-footer-bar">
+        <p>&copy; 2026 FloodSense AI. All rights reserved.</p>
+    </footer>
+</body>
+</html>
